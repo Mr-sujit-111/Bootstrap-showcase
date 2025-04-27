@@ -10,7 +10,7 @@ export const metadata: Metadata = {
   title: "Sujit Bhanderi | Frontend Developer",
   description:
     "Professional portfolio of Sujit Bhanderi, a frontend developer specializing in Next.js, React.js, and Tailwind CSS",
-    generator: 'v0.dev'
+  generator: "v0.dev",
 }
 
 export default function RootLayout({
@@ -28,7 +28,3 @@ export default function RootLayout({
     </html>
   )
 }
-
-
-
-import './globals.css'

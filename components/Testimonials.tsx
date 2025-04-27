@@ -89,7 +89,6 @@ export default function Testimonials() {
                               className="w-full h-full object-cover"
                             />
                           </div>
-
                         </div>
                         <div className="col-md-8">
                           <div className="testimonial-content">
@@ -144,4 +143,3 @@ export default function Testimonials() {
     </section>
   )
 }
-

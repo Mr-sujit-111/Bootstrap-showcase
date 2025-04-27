@@ -28,7 +28,7 @@ export default function Hero() {
               style={{ maxWidth: "350px", maxHeight: "350px" }}
             >
               <Image
-                src="https://www.upwork.com/profile-portraits/c1O6pxemEFFufOsDRLEya_4L17PnxMY6s8viZ_LYw-WUCCtegL99U833QhBpqCYEhe"
+                src="/profile-pic.png"
                 alt="Sujit Bhanderi"
                 width={350}
                 height={350}
@@ -47,4 +47,3 @@ export default function Hero() {
     </section>
   )
 }
-

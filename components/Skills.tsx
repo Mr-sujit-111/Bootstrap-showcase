@@ -1,3 +1,13 @@
+"use client"
+
+import { useEffect } from "react"
+
+declare global {
+  interface Window {
+    bootstrap: any
+  }
+}
+
 export default function Skills() {
   const frontendSkills = [
     { name: "React.js", percentage: 95 },
@@ -16,6 +26,18 @@ export default function Skills() {
     { name: "Vercel, Netlify", percentage: 90 },
     { name: "Node.js & Express.js (Basic)", percentage: 75 },
   ]
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      // Initialize Bootstrap tooltips
+      const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+      if (window.bootstrap && window.bootstrap.Tooltip) {
+        tooltipTriggerList.forEach((tooltipTriggerEl) => {
+          new window.bootstrap.Tooltip(tooltipTriggerEl)
+        })
+      }
+    }
+  }, [])
 
   return (
     <section id="skills" className="skills py-5 bg-light">
@@ -343,4 +365,3 @@ export default function Skills() {
     </section>
   )
 }
-

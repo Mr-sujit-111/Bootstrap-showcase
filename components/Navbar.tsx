@@ -1,16 +1,38 @@
 "use client"
 
 import Link from "next/link"
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import { Bell, Sun, Moon } from "lucide-react"
 
 export default function Navbar() {
   const [darkMode, setDarkMode] = useState(false)
   const [showNotification, setShowNotification] = useState(false)
 
+  useEffect(() => {
+    // Only run in browser environment
+    if (typeof window !== "undefined") {
+      // Check if there's a saved theme preference
+      const savedTheme = localStorage.getItem("theme")
+      if (savedTheme === "dark") {
+        setDarkMode(true)
+        document.body.classList.add("dark-mode")
+      }
+    }
+  }, [])
+
   const toggleDarkMode = () => {
-    setDarkMode(!darkMode)
-    document.body.classList.toggle("dark-mode")
+    const newDarkMode = !darkMode
+    setDarkMode(newDarkMode)
+
+    if (typeof window !== "undefined") {
+      if (newDarkMode) {
+        document.body.classList.add("dark-mode")
+        localStorage.setItem("theme", "dark")
+      } else {
+        document.body.classList.remove("dark-mode")
+        localStorage.setItem("theme", "light")
+      }
+    }
   }
 
   return (
@@ -351,4 +373,3 @@ export default function Navbar() {
     </>
   )
 }
-

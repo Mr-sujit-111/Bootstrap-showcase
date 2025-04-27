@@ -15,37 +15,39 @@ import * as bootstrap from "bootstrap"
 export default function Portfolio() {
   // Smooth scrolling for anchor links
   useEffect(() => {
-    const handleAnchorClick = (e: MouseEvent) => {
-      const target = e.target as HTMLElement
-      const anchor = target.closest('a[href^="#"]')
+    // Only run client-side code in the browser
+    if (typeof window !== "undefined") {
+      // Smooth scrolling for anchor links
+      const handleAnchorClick = (e: MouseEvent) => {
+        const target = e.target as HTMLElement
+        const anchor = target.closest('a[href^="#"]')
 
-      if (anchor) {
-        e.preventDefault()
-        const targetId = anchor.getAttribute("href")
-        if (targetId && targetId !== "#") {
-          const targetElement = document.querySelector(targetId)
-          if (targetElement) {
-            window.scrollTo({
-              top: targetElement.getBoundingClientRect().top + window.scrollY - 80,
-              behavior: "smooth",
-            })
+        if (anchor) {
+          e.preventDefault()
+          const targetId = anchor.getAttribute("href")
+          if (targetId && targetId !== "#") {
+            const targetElement = document.querySelector(targetId)
+            if (targetElement) {
+              window.scrollTo({
+                top: targetElement.getBoundingClientRect().top + window.scrollY - 80,
+                behavior: "smooth",
+              })
+            }
           }
         }
       }
-    }
 
-    document.addEventListener("click", handleAnchorClick)
+      document.addEventListener("click", handleAnchorClick)
 
-    // Initialize Bootstrap tooltips and popovers
-    if (typeof document !== "undefined") {
+      // Initialize Bootstrap tooltips and popovers
       const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
       tooltipTriggerList.map((tooltipTriggerEl) => new bootstrap.Tooltip(tooltipTriggerEl))
 
       const popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
       popoverTriggerList.map((popoverTriggerEl) => new bootstrap.Popover(popoverTriggerEl))
-    }
 
-    return () => document.removeEventListener("click", handleAnchorClick)
+      return () => document.removeEventListener("click", handleAnchorClick)
+    }
   }, [])
 
   return (
@@ -77,4 +79,3 @@ export default function Portfolio() {
     </div>
   )
 }
-
