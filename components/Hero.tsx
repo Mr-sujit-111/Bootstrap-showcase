@@ -27,13 +27,7 @@ export default function Hero() {
               className="hero-img-container rounded-circle overflow-hidden mx-auto"
               style={{ maxWidth: "350px", maxHeight: "350px" }}
             >
-              <Image
-                src="/profile-pic.png"
-                alt="Sujit Bhanderi"
-                width={350}
-                height={350}
-                className="img-fluid"
-              />
+              <Image src="/profile-pic.png" alt="Sujit Bhanderi" width={350} height={350} className="img-fluid" />
             </div>
           </div>
         </div>

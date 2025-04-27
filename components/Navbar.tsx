@@ -1,24 +1,55 @@
 "use client"
 
 import Link from "next/link"
-import { useState, useEffect } from "react"
+import { useState, useEffect, useRef } from "react"
 import { Bell, Sun, Moon } from "lucide-react"
 
-export default function Navbar() {
+interface NavbarProps {
+  bootstrapLoaded?: boolean
+}
+
+export default function Navbar({ bootstrapLoaded = false }: NavbarProps) {
   const [darkMode, setDarkMode] = useState(false)
   const [showNotification, setShowNotification] = useState(false)
+  const tooltipsInitialized = useRef(false)
 
   useEffect(() => {
-    // Only run in browser environment
-    if (typeof window !== "undefined") {
-      // Check if there's a saved theme preference
-      const savedTheme = localStorage.getItem("theme")
-      if (savedTheme === "dark") {
-        setDarkMode(true)
-        document.body.classList.add("dark-mode")
+    try {
+      // Only run in browser environment
+      if (typeof window !== "undefined") {
+        // Check if there's a saved theme preference
+        const savedTheme = localStorage.getItem("theme")
+        if (savedTheme === "dark") {
+          setDarkMode(true)
+          document.body.classList.add("dark-mode")
+        }
       }
+    } catch (error) {
+      console.error("Error in theme initialization:", error)
     }
   }, [])
+
+  // Initialize tooltips only after Bootstrap is fully loaded
+  useEffect(() => {
+    if (bootstrapLoaded && !tooltipsInitialized.current && typeof window !== "undefined" && window.bootstrap) {
+      try {
+        // Wait a bit to ensure DOM is ready
+        const timer = setTimeout(() => {
+          const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+          if (tooltipTriggerList.length > 0) {
+            Array.from(tooltipTriggerList).forEach((tooltipTriggerEl) => {
+              new window.bootstrap.Tooltip(tooltipTriggerEl)
+            })
+            tooltipsInitialized.current = true
+          }
+        }, 500)
+
+        return () => clearTimeout(timer)
+      } catch (error) {
+        console.error("Failed to initialize tooltips:", error)
+      }
+    }
+  }, [bootstrapLoaded])
 
   const toggleDarkMode = () => {
     const newDarkMode = !darkMode
@@ -131,14 +162,9 @@ export default function Navbar() {
                 <button
                   className="btn btn-link nav-link relative p-2"
                   onClick={() => setShowNotification(!showNotification)}
-                  data-bs-toggle="tooltip"
-                  data-bs-placement="bottom"
                   title="Notifications"
                 >
                   <Bell size={24} className="text-dark" />
-                  {/*  <span className="absolute -top-1 -right-2 bg-danger text-black text-xs font-bold rounded-full w-5 h-5 flex items-center justify-center">
-                    2
-                  </span> */}
                 </button>
               </li>
 
@@ -146,8 +172,6 @@ export default function Navbar() {
                 <button
                   className="btn btn-link nav-link"
                   onClick={toggleDarkMode}
-                  data-bs-toggle="tooltip"
-                  data-bs-placement="bottom"
                   title={darkMode ? "Switch to Light Mode" : "Switch to Dark Mode"}
                 >
                   {darkMode ? <Sun size={20} /> : <Moon size={20} />}

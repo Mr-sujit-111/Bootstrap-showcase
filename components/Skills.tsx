@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useRef } from "react"
 
 declare global {
   interface Window {
@@ -8,7 +8,13 @@ declare global {
   }
 }
 
-export default function Skills() {
+interface SkillsProps {
+  bootstrapLoaded?: boolean
+}
+
+export default function Skills({ bootstrapLoaded = false }: SkillsProps) {
+  const tooltipsInitialized = useRef(false)
+
   const frontendSkills = [
     { name: "React.js", percentage: 95 },
     { name: "Next.js", percentage: 90 },
@@ -27,17 +33,27 @@ export default function Skills() {
     { name: "Node.js & Express.js (Basic)", percentage: 75 },
   ]
 
+  // Initialize tooltips only after Bootstrap is fully loaded
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      // Initialize Bootstrap tooltips
-      const tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
-      if (window.bootstrap && window.bootstrap.Tooltip) {
-        tooltipTriggerList.forEach((tooltipTriggerEl) => {
-          new window.bootstrap.Tooltip(tooltipTriggerEl)
-        })
+    if (bootstrapLoaded && !tooltipsInitialized.current && typeof window !== "undefined" && window.bootstrap) {
+      try {
+        // Wait a bit to ensure DOM is ready
+        const timer = setTimeout(() => {
+          const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle="tooltip"]')
+          if (tooltipTriggerList.length > 0) {
+            Array.from(tooltipTriggerList).forEach((tooltipTriggerEl) => {
+              new window.bootstrap.Tooltip(tooltipTriggerEl)
+            })
+            tooltipsInitialized.current = true
+          }
+        }, 500)
+
+        return () => clearTimeout(timer)
+      } catch (error) {
+        console.error("Failed to initialize tooltips:", error)
       }
     }
-  }, [])
+  }, [bootstrapLoaded])
 
   return (
     <section id="skills" className="skills py-5 bg-light">
@@ -120,8 +136,6 @@ export default function Skills() {
                             aria-valuenow={skill.percentage}
                             aria-valuemin={0}
                             aria-valuemax={100}
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="top"
                             title={`${skill.percentage}% proficiency`}
                           ></div>
                         </div>
@@ -143,8 +157,6 @@ export default function Skills() {
                             aria-valuenow={skill.percentage}
                             aria-valuemin={0}
                             aria-valuemax={100}
-                            data-bs-toggle="tooltip"
-                            data-bs-placement="top"
                             title={`${skill.percentage}% proficiency`}
                           ></div>
                         </div>
@@ -266,14 +278,7 @@ export default function Skills() {
                     <div className="p-2 bg-light border">Col</div>
                   </div>
                 </div>
-                <button
-                  type="button"
-                  className="btn btn-sm btn-outline-primary"
-                  data-bs-toggle="popover"
-                  data-bs-placement="top"
-                  data-bs-content="Bootstrap's grid system uses a series of containers, rows, and columns to layout and align content."
-                  data-bs-title="Grid System"
-                >
+                <button type="button" className="btn btn-sm btn-outline-primary" title="Grid System">
                   Learn More
                 </button>
               </div>

@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 /* Custom styles for Sujit's Portfolio */
 
 /* General styles */
@@ -270,5 +274,27 @@ body.dark-mode .form-control::placeholder {
 
   .testimonial-img {
     margin-bottom: 1.5rem;
+  }
+}
+
+/* Add Tailwind base layer customizations */
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
+
+/* Add Tailwind component layer customizations */
+@layer components {
+  /* You can add component styles here */
+}
+
+/* Add Tailwind utility layer customizations */
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
   }
 }
