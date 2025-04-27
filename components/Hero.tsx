@@ -32,7 +32,7 @@ export default function Hero() {
           </div>
         </div>
         <div className="scroll-down text-center mt-5">
-          <a href="#about" className="text-dark text-decoration-none">
+          <a href="#about" className="text-dark d-flex w-100 justify-content-center align-items-center flex-column text-decoration-none">
             <span className="d-block mb-2">Scroll Down</span>
             <ChevronDown className="animate-bounce" />
           </a>
